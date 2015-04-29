@@ -1,6 +1,7 @@
 from xml.etree.ElementTree import Element, ElementTree, SubElement, tostring
+import collections
 
-_precision = 3
+_precision = 9
 
 def set_precision(n=3):
     global _precision
@@ -9,12 +10,15 @@ def set_precision(n=3):
 def parse_attribs(attrib):
     att = {}
     for key in attrib:
-        if isinstance(attrib[key], type(1)):
-            att[key] = str(attrib[key])
-        elif isinstance(attrib[key], type(1.)):
-            att[key] = str(round(attrib[key], _precision))
-        else:
-            att[key] = attrib[key]
+        value = attrib[key]
+        if isinstance(value, float):
+            if abs(value - round(value)) < 10.**(-_precision):
+                value = int(value)
+        elif isinstance(value, collections.Sized):
+            s = ''
+            for i in range(len(value)):
+                s += str(i)
+        att[key] = str(value)
     return att
 
 class SVGElement(Element):
@@ -27,3 +31,4 @@ class SVGElement(Element):
 def SVGSubElement(parent, tag, attrib={}, **extra):
     att = parse_attribs(attrib)
     return SubElement(parent, tag, att, **extra)
+    
