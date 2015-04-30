@@ -1,4 +1,4 @@
-from xml.etree.ElementTree import Element, ElementTree, SubElement, tostring
+from xml.etree.ElementTree import Element, ElementTree, tostring
 import collections
 
 _precision = 9
@@ -30,5 +30,7 @@ class SVGElement(Element):
         
 def SVGSubElement(parent, tag, attrib={}, **extra):
     att = parse_attribs(attrib)
-    return SubElement(parent, tag, att, **extra)
+    svge = SVGElement(tag, att, **extra)
+    parent.append(svge)
+    return svge
     
