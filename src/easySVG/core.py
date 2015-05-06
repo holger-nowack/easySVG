@@ -1,7 +1,16 @@
-from xml.etree.ElementTree import Element, ElementTree, tostring
+import xml.etree.ElementTree as ET
 import collections
 from io import BytesIO as SVGIO
 import xml.dom.minidom
+
+serialize_xml = ET._serialize_xml
+def SVG_serialize_xml(write, elem, *args, **kwargs):
+    if isinstance(elem, CDATA):
+        write('<{}{}]]>'.format(elem.tag, elem.text))
+        return
+    return serialize_xml(write, elem, *args, **kwargs)
+ET._serialize_xml = SVG_serialize_xml
+ET._serialize['xml'] = SVG_serialize_xml
 
 _precision = 9
 
@@ -23,12 +32,19 @@ def parse_attribs(attrib):
         att[key] = str(value)
     return att
 
-class SVGElement(Element):
+class SVGElement(ET.Element):
     
     def __init__(self, tag, attrib={}, **extra):
         att = parse_attribs(attrib)
         super(self.__class__, self).__init__(tag, att, **extra)
 
+class CDATA(ET.Element):
+
+    def __init__(self, parent, text):
+        element = ET.Element('![CDATA[')
+        super(self.__class__, self).__init__('![CDATA[')
+        self.text = text
+        parent.append(self)
 
 def SVGSubElement(parent, tag, attrib={}, **extra):
     att = parse_attribs(attrib)
@@ -37,7 +53,7 @@ def SVGSubElement(parent, tag, attrib={}, **extra):
     return svge
 
 def write(elem, filename, encoding='utf-8', indent='    '):
-    tree = ElementTree(elem)
+    tree = ET.ElementTree(elem)
     io = SVGIO()
     tree.write(io, encoding=encoding, xml_declaration=True, method='xml')
 
