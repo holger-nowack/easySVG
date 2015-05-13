@@ -14,8 +14,8 @@ def rect(P_ul, width, height, attrib={}, parent=None, **extra):
     return svge
 
 def circle(P_0, r, attrib={}, parent=None, **extra):
-    att = {'x': P_0[0],
-           'y': P_0[1],
+    att = {'cx': P_0[0],
+           'cy': P_0[1],
            'r': r,
           }
     att.update(attrib)
