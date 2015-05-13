@@ -23,3 +23,23 @@ def circle(P_0, r, attrib={}, parent=None, **extra):
           }
     att.update(attrib)
     return createElement('circle', parent, att, **extra)
+
+def ellipse(P_0, rx, ry, attrib={}, parent=None, **extra):
+    att = {'cx': P_0[0],
+           'cy': P_0[1],
+           'rx': rx,
+           'ry': ry,
+          }
+    att.update(attrib)
+    return createElement('ellipse', parent, att, **extra)
+
+def polygon(points, attrib={}, parent=None, **extra):
+    pstring = ''
+    for p in points:
+        pstring += '{},{} '.format(p[0], p[1])
+    pstring.strip()
+    att = {'points': pstring,
+          }
+    att.update(attrib)
+    return createElement('polygon', parent, att, **extra)
+
