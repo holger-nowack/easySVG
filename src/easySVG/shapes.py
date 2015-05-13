@@ -1,5 +1,12 @@
 from easySVG.core import SVGElement, SVGSubElement, parse_attribs
 
+def createElement(name, parent, attrib={}, **extra):
+    if parent == None:
+        sgve = SVGElement(name, parse_attribs(attrib), **extra)
+    else:
+        svge = SVGSubElement(parent, name, parse_attribs(attrib), **extra)
+    return svge
+
 def rect(P_ul, width, height, attrib={}, parent=None, **extra):
     att = {'x': P_ul[0],
            'y': P_ul[1],
@@ -7,11 +14,7 @@ def rect(P_ul, width, height, attrib={}, parent=None, **extra):
            'height': height,
           }
     att.update(attrib)
-    if parent == None:
-        sgve = SVGElement('rect', parse_attribs(att), **extra)
-    else:
-        svge = SVGSubElement(parent, 'rect', parse_attribs(att), **extra)
-    return svge
+    return createElement('rect', parent, att, **extra)
 
 def circle(P_0, r, attrib={}, parent=None, **extra):
     att = {'cx': P_0[0],
@@ -19,8 +22,4 @@ def circle(P_0, r, attrib={}, parent=None, **extra):
            'r': r,
           }
     att.update(attrib)
-    if parent == None:
-        sgve = SVGElement('circle', parse_attribs(att), **extra)
-    else:
-        svge = SVGSubElement(parent, 'circle', parse_attribs(att), **extra)
-    return svge
+    return createElement('circle', parent, att, **extra)
