@@ -115,8 +115,7 @@ def SVGSubElement(parent, tag, attrib={}, **extra):
 
     '''
 
-    att = parse_attribs(attrib)
-    svge = SVGElement(tag, att, **extra)
+    svge = SVGElement(tag, attrib, **extra)
     parent.append(svge)
     return svge
 
