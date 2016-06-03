@@ -1,9 +1,17 @@
+# -*- coding: utf-8 -*-
+
 import unittest
 import easySVG.core
 import numpy as np
 import numbers
 import collections
 import sys
+
+from easySVG.core import SVGElement, SVGSubElement, set_precision, write, CDATA
+import xml.etree.ElementTree as ET
+import collections
+from io import BytesIO as SVGIO
+import xml.dom.minidom
 
 class coreTest(unittest.TestCase):
     
@@ -50,6 +58,30 @@ class coreTest(unittest.TestCase):
         pas = easySVG.core.parse_attribs(attribs)           
         for k in pas:
             self.assertEqual(sollution[k], pas[k])
+            
+    def test_umlaute(self):
+        encoding='utf-8'
+        indent='    '
+        
+        svg = SVGElement('svg')
+        t = SVGSubElement(svg, 'text')
+        t.add_text('äöüß', encoding)
+
+        tree = ET.ElementTree(svg)
+        io = SVGIO()
+        tree.write(io, encoding=encoding, xml_declaration=None, method='xml')
+
+        dom = xml.dom.minidom.parseString(io.getvalue())
+        pretty_str = dom.toprettyxml(indent=indent,
+                                 encoding=encoding)
+        io2 = SVGIO(pretty_str)
+        test_tree = ET.parse(io2)
+        for txt in test_tree.iter('text'):
+            if sys.version_info >= (3,0,0):
+                self.assertEqual('äöüß', txt.text)
+            else:
+                self.assertEqual('äöüß'.decode(encoding), txt.text)
+
 if __name__ == "__main__":
     print(sys.version)
     unittest.main()
