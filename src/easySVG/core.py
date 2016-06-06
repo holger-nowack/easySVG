@@ -165,6 +165,6 @@ def write(elem, filename, encoding='utf-8', indent='    '):
 
     dom = xml.dom.minidom.parseString(io.getvalue())
     pretty_str = dom.toprettyxml(indent=indent,
-                                 encoding=encoding).decode(encoding)
-    with open(filename, 'w') as f:
+                                 encoding=encoding)
+    with open(filename, 'wb') as f:
         f.write((pretty_str))
