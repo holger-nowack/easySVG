@@ -35,7 +35,7 @@ ET._serialize['xml'] = SVG_serialize_xml
 
 _precision = 9
 
-def set_precision():
+def set_precision(n):
     '''
     Sets the precision to be used for floating point values of SVG attributes.
     
