@@ -2,7 +2,7 @@ from easySVG.core import SVGElement, SVGSubElement, parse_attribs
 
 def createElement(name, parent, attrib={}, **extra):
     if parent == None:
-        sgve = SVGElement(name, parse_attribs(attrib), **extra)
+        svge = SVGElement(name, parse_attribs(attrib), **extra)
     else:
         svge = SVGSubElement(parent, name, parse_attribs(attrib), **extra)
     return svge
@@ -42,4 +42,13 @@ def polygon(points, attrib={}, parent=None, **extra):
           }
     att.update(attrib)
     return createElement('polygon', parent, att, **extra)
+
+def line(P_0, P_1, attrib={}, parent=None, **extra):
+    att = {'x1': P_0[0],
+           'y1': P_0[1],
+           'x2': P_1[0],
+           'y2': P_1[1],
+          }
+    att.update(attrib)
+    return createElement('line', parent, att, **extra)
 
