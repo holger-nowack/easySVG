@@ -160,11 +160,19 @@ def write(elem, filename, encoding='utf-8', indent='    '):
     '''
 
     tree = ET.ElementTree(elem)
+    indented_39 = False
+    if hasattr(ET, 'indent'):
+        # `indent` is available from Python 3.9
+        ET.indent(tree, space=indent)
+        indented_39 = True
     io = SVGIO()
     tree.write(io, encoding=encoding, xml_declaration=True, method='xml')
 
     dom = xml.dom.minidom.parseString(io.getvalue())
-    pretty_str = dom.toprettyxml(indent=indent,
-                                 encoding=encoding)
+    if indented_39:
+        pretty_str = io.getvalue()
+    else:
+        pretty_str = dom.toprettyxml(indent=indent,
+                                    encoding=encoding)
     with open(filename, 'wb') as f:
         f.write((pretty_str))
