@@ -2,14 +2,10 @@
 
 import unittest
 import easySVG.core
-import numpy as np
-import numbers
-import collections
 import sys
 
 from easySVG.core import SVGElement, SVGSubElement, set_precision, write, CDATA
 import xml.etree.ElementTree as ET
-import collections
 from io import BytesIO as SVGIO
 import xml.dom.minidom
 
