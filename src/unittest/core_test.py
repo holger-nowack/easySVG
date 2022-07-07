@@ -77,10 +77,7 @@ class coreTest(unittest.TestCase):
         io2 = SVGIO(pretty_str)
         test_tree = ET.parse(io2)
         for txt in test_tree.iter('text'):
-            if sys.version_info >= (3,0,0):
-                self.assertEqual('äöüß', txt.text)
-            else:
-                self.assertEqual('äöüß'.decode(encoding), txt.text)
+            self.assertEqual('äöüß', txt.text)
 
 if __name__ == "__main__":
     print(sys.version)

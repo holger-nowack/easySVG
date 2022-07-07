@@ -3,7 +3,6 @@ This module provides the core functionalities of the easySVG library.
 
 '''
 
-import sys
 import xml.etree.ElementTree as ET
 import collections
 from io import BytesIO as SVGIO
@@ -88,25 +87,19 @@ class SVGElement(ET.Element):
     def add_text(self, txt, encoding):
         '''
         Adds a text to the element with specified encoding. Handles encoding
-        correct for python versions 2 and 3.
+        correct for python version 3 `bytes` objects. In case of strings
+        `encoding` is ignored.
         
         :param self: A SVG element.
         :param txt: The txt to add to the SVG element.
         :param encoding: The encoding of txt.
 
         '''
-        if sys.version_info >= (3,0,0):
-            # for Python 3
-            if isinstance(txt, bytes):
-                s = txt.decode(encoding)  # or  s = str(s)[2:-1]
-            else:
-                s = txt
+
+        if isinstance(txt, bytes):
+            s = txt.decode(encoding)  # or  s = str(s)[2:-1]
         else:
-            # for Python 2
-            if isinstance(txt, unicode):
-                s = txt
-            else:
-                s = txt.decode(encoding)
+            s = txt
         self.text = s
 
 class CDATA(ET.Element):
