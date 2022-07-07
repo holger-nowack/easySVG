@@ -63,7 +63,7 @@ def parse_attribs(attrib):
         if isinstance(value, float):
             if abs(value - round(value)) < 10.**(-_precision):
                 value = int(value)
-        elif isinstance(value, collections.Sized):
+        elif isinstance(value, collections.abc.Sized):
             s = ''
             for i in range(len(value)):
                 s += str(i)
